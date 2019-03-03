@@ -12,3 +12,4 @@ D:\C#repos\FileManager\FileManager\obj\Debug\FileManager.csproj.GenerateResource
 D:\C#repos\FileManager\FileManager\obj\Debug\FileManager.csproj.CoreCompileInputs.cache
 D:\C#repos\FileManager\FileManager\obj\Debug\FileManager.exe
 D:\C#repos\FileManager\FileManager\obj\Debug\FileManager.pdb
+D:\C#repos\FileManager\FileManager\obj\Debug\FileManager.csprojAssemblyReference.cache
