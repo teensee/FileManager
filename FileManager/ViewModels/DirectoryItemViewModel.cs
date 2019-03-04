@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace FileManager
@@ -23,10 +25,12 @@ namespace FileManager
         /// </summary>
         public string FullPath { get; set; }
 
+        public bool IsHidden { get; set; }
+
         /// <summary>
         /// The name of this directory item
         /// </summary>
-        public string Name => this.Type == DirectoryItemType.Drive ? this.FullPath : DirectoryStucture.GetFileFolderName(this.FullPath);
+        public string Name => DirectoryStucture.GetFileFolderName(this.FullPath, this.Type);
 
         /// <summary>
         /// A list of all children contained inside this item
@@ -37,6 +41,34 @@ namespace FileManager
         /// Indicates if this item can be expanded
         /// </summary>
         public bool CanExpand => this.Type != DirectoryItemType.File;
+
+        //public string ImageName => Type == DirectoryItemType.Drive ? "drive.png" : (Type == DirectoryItemType.File ? "file.png" : (IsExpanded ? "folder-open.png" : "folder-closed.png"));
+        /// <summary>
+        /// Changing icon when we expand/close folder
+        /// </summary>
+        public string ImageName
+        {
+            get
+            {
+                string imgName = string.Empty;
+
+                if (Type == DirectoryItemType.Drive)
+                    imgName = "save.png";
+
+                else if (Type == DirectoryItemType.File)
+                    imgName = "file.png";
+
+                else if(Type == DirectoryItemType.Folder)
+                {
+                    if (!IsExpanded)
+                        imgName = "folder-closed.png";
+
+                    else imgName = "folder-open.png";
+                }
+
+                return imgName;
+            }
+        }
 
         /// <summary>
         /// Indicates if the current item is expanded ot not
@@ -78,11 +110,12 @@ namespace FileManager
         /// </summary>
         /// <param name="fullpath">full path of this item</param>
         /// <param name="type">The type of this item</param>
-        public DirectoryItemViewModel(string fullpath, DirectoryItemType type)
+        public DirectoryItemViewModel(string fullpath, DirectoryItemType type, bool isHidden)
         {
             ExpandCommand = new RelayCommand(Expand);
             FullPath = fullpath;
             Type = type;
+            IsHidden = isHidden; 
 
             ClearChildren();
         }
@@ -115,7 +148,7 @@ namespace FileManager
             //Find all children
             var structure = DirectoryStucture.GetDirectoryContent(FullPath);
             Children = new ObservableCollection<DirectoryItemViewModel>(
-                            structure.Select(content => new DirectoryItemViewModel(content.FullPath, content.Type)));
+                            structure.Select(content => new DirectoryItemViewModel(content.FullPath, content.Type, content.IsHidden)));
         }
     }
 }

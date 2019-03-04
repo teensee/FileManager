@@ -19,7 +19,8 @@ namespace FileManager
                         drive => new DirectoryItem
                                 {
                                     FullPath = drive,
-                                    Type = DirectoryItemType.Drive
+                                    Type = DirectoryItemType.Drive,
+                                    IsHidden = false
                                 }).ToList();
         }
 
@@ -41,7 +42,13 @@ namespace FileManager
                 var dirs = Directory.GetDirectories(fullPath);
 
                 if (dirs.Length > 0)
-                    items.AddRange(dirs.Select(dir => new DirectoryItem { FullPath = dir, Type = DirectoryItemType.Folder }));
+                    items.AddRange(dirs.Select(
+                            dir => new DirectoryItem
+                            {
+                                FullPath = dir,
+                                Type = DirectoryItemType.Folder,
+                                IsHidden = ((File.GetAttributes(dir) & FileAttributes.Hidden) == FileAttributes.Hidden)
+                            }));
             }
             catch { }
 
@@ -49,7 +56,6 @@ namespace FileManager
 
             #region Get Files
 
-           
             try
             {
                 //Get all files on selected directory
@@ -69,10 +75,14 @@ namespace FileManager
 
         #region Helper
 
-        public static string GetFileFolderName(string path)
+        public static string GetFileFolderName(string path, DirectoryItemType type)
         {
+
             if (string.IsNullOrEmpty(path))
                 return string.Empty;
+
+            if (type == DirectoryItemType.Drive)
+                return path;
 
             //Correct slashes
             var correctedPath = path.Replace('/', '\\');

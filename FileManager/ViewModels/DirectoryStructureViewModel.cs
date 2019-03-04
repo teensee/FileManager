@@ -32,7 +32,7 @@ namespace FileManager
 
             //Create a view models from the data
             this.Items = new ObservableCollection<DirectoryItemViewModel>(
-                                childrenDrives.Select(drive => new DirectoryItemViewModel(drive.FullPath, DirectoryItemType.Drive)));
+                                childrenDrives.Select(drive => new DirectoryItemViewModel(drive.FullPath, DirectoryItemType.Drive, false)));
         }
 
     }

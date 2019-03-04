@@ -14,7 +14,6 @@ namespace FileManager
             InitializeComponent();
 
             this.DataContext = new DirectoryStructureViewModel();
-
         }
 
         #endregion

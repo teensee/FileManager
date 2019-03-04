@@ -15,9 +15,11 @@
         /// </summary>
         public string FullPath { get; set; }
 
+        public bool IsHidden { get; set; }
+
         /// <summary>
         /// The name of this directory item
         /// </summary>
-        public string Name => this.Type == DirectoryItemType.Drive ? this.FullPath : DirectoryStucture.GetFileFolderName(this.FullPath);
+        public string Name => DirectoryStucture.GetFileFolderName(this.FullPath, this.Type);
     }
 }

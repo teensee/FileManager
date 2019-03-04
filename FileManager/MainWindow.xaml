@@ -20,8 +20,20 @@
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                     <StackPanel Orientation="Horizontal">
-                        <Image Width="20" Margin="5"
-                               Source="{Binding Type, Converter={x:Static local:HeaderToImageConverter.Instance}}"/>
+                        <Image Source="{Binding ImageName, Converter={x:Static local:HeaderToImageConverter.Instance}}">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Width" Value="20"/>
+                                    <Setter Property="Margin" Value="5"/>
+                                    
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsHidden}" Value="True">
+                                            <Setter Property="Opacity" Value="0.5"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
                         <TextBlock VerticalAlignment="Center" Text="{Binding Name}"/>
                     </StackPanel>
                 </HierarchicalDataTemplate>
@@ -30,4 +42,7 @@
     </Grid>
 
     
+
+
+
 </Window>
